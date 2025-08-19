@@ -15,25 +15,7 @@ This repository contains the code and data used to generate figures for:
 └── README.md               # This file
 ```
 
-## Generating Figures
-
-All figures can be reproduced by running the corresponding Jupyter notebooks in the `note/` directory:
-
-| Figure | Notebook |
-|--------|----------|
-| Figure 1,S2 | `Fig1.ipynb` |
-| Figures 2-4 | `Fig2-4.ipynb` |
-| Figure 5,S4,S5 | `Fig5.ipynb` |
-| Figure S1 | `FigS1.ipynb` |
-| Figure S3 | `FigS3.ipynb` |
-
-## Data Generation
-
-Most data is generated directly within the figure notebooks when you run them. Some computationally intensive cells include time information as comments based on the specified hardware environment.
-
-**Exception: Figure 5 data** is precomputed and stored in the `data/` directory due to computational requirements (approximately 11 hours on the specified hardware). If you need to regenerate this data yourself, run `Simulate_Fig5.ipynb` (note: computation time may vary significantly depending on your hardware specifications).
-
-## Usage
+## Setup Instructions
 
 1. Clone this repository
 2. Open any notebook in the `note/` directory
@@ -45,10 +27,27 @@ Most data is generated directly within the figure notebooks when you run them. S
    ```
 4. Run the remaining notebook cells in order to generate figures and data
 
+## Generating Figures and Data
+
+All figures can be reproduced by running the corresponding Jupyter notebooks in the `note/` directory:
+
+| Figure | Notebook |
+|--------|----------|
+| Figure 1,S2 | `Fig1.ipynb` |
+| Figures 2-4 | `Fig2-4.ipynb` |
+| Figure 5,S4,S5 | `Fig5.ipynb` |
+| Figure S1 | `FigS1.ipynb` |
+| Figure S3 | `FigS3.ipynb` |
+
+Most data is generated directly within the figure notebooks when you run them. Some computationally intensive cells include time information as comments based on the specified hardware environment.
+
+**Exception: Figure 5 data** is precomputed and stored in the `data/` directory due to computational requirements (approximately 11 hours on the specified hardware). If you need to regenerate this data yourself, run `Simulate_Fig5.ipynb` (note: computation time may vary significantly depending on your hardware specifications).
+
+
 ## Requirements
 
 - Julia
-- Jupyter Notebook with IJulia kernel
+- Jupyter Notebook with IJulia kernel (For installation instructions, see: https://julialang.github.io/IJulia.jl/stable/manual/installation/)
 - Dependencies specified in `Project.toml` and `Manifest.toml` (automatically installed via first notebook cell)
 
 ## Computational Environment
