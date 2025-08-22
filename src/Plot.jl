@@ -157,8 +157,8 @@ function plot_selectivity_space(h_A,h_B,colorbar=false;color = :black)
     markersize = 1.5
     lim = (-8.,8.)
     clim = (-3,3)
-    labelA = "\$h^0\$: Response to phase \$\\theta=0\$"
-    labelB = "\$h^{\\pi}\$: Response to phase \$\\theta=\\pi\$"
+    labelA = "Response to phase\$=0\$"
+    labelB = "Response to phase\$=\\pi\$"
     #p1 = scatter(h_A[:,1],h_B[:,1],zcolor=selectivity,aspect_ratio = 1,markerstrokewidth=0,figsize=(400,400),color=color,ylim=lim,xlim=lim,xlabel=labelA,ylabel=labelB,markersize=markersize,clim = clim,title="\$t=0\$",permute=(:x,:y))
     #p2 = scatter(h_A[:,end],h_B[:,end],zcolor=selectivity,aspect_ratio = 1,markerstrokewidth=0,figsize=(400,400),color=color,ylim=lim,xlim=lim,xlabel=labelA,ylabel=labelB,markersize=markersize,clim=clim,title="\$t=3\\tau\$")
     p1 = scatter(h_A[:,1],h_B[:,1],aspect_ratio = 1,markerstrokewidth=0,figsize=(400,400),color=color,ylim=lim,xlim=lim,xlabel=labelA,ylabel=labelB,markersize=markersize,clim = clim,title="\$t=0\$")
@@ -167,7 +167,7 @@ function plot_selectivity_space(h_A,h_B,colorbar=false;color = :black)
     sparse = rand(p.Nc) .< 0.05
     #scatter(h_A[sparse,1],h_B[sparse,1],markersize=0.5)
     #quiver(h_A[sparse,1],h_B[sparse,1],quiver = (h_A[sparse,end]-h_A[sparse,1],h_B[sparse,end]-h_B[sparse,1]),line_z = repeat(selectivity[sparse],inner=4),c=color)
-    quiver(h_A[sparse,1],h_B[sparse,1],quiver = (h_A[sparse,end]-h_A[sparse,1],h_B[sparse,end]-h_B[sparse,1]),c=color)#"#017100")
+    quiver(h_A[sparse,1],h_B[sparse,1],quiver = (h_A[sparse,end]-h_A[sparse,1],h_B[sparse,end]-h_B[sparse,1]),c="#017100")
     p3 = plot!(aspect_ratio = 1,ylim=lim,xlim=lim,clim=clim,title= "\$\\mathrm{change:}\\ t=0\\rightarrow 3\\tau\$",xlabel=labelA,ylabel=labelB,colorbar_title = "\$h^{A}-h^{B}\\ \\mathrm{at}\\ t=0\$")
     plot(p1,p2,p3,layout=(1,3),size=(1200,400),legend=false,colorbar=colorbar)
 end
