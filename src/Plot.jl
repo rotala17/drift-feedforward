@@ -18,7 +18,7 @@ function plot_sample_trajectory(p,ϕ,colormap,result;only_responsive = false,yli
         tlist = 0:p.dt:p.t_end
         p1 = heatmap(tlist,1:Nc,C[perm,1,:],
         xlabel="\$t\$",
-        ylabel="Neuron ID",
+        ylabel="Hidden neuron ID",
         colormap = colormap,
         colorbar=false)
 
@@ -273,16 +273,18 @@ function file2PI(filename,ρLmn,ρSmn)
     gL_λσ,p,S,L,γlist,σlist,Nclist,λlist = jlddata["gL_λσ"],jlddata["p"],jlddata["S"],jlddata["L"],jlddata["γlist"],jlddata["σlist"],jlddata["Nclist"],jlddata["λlist"]
 
     PI_boot_γσ = PI_boot_gL_list.(gL_λσ)
+    #switched the plot order of J and h
+    PI_boot_γσ = PI_boot_γσ[2:-1:1,:,:,:,:]
 
     PI_analytical = zeros(2,length(γlist),length(σlist),length(Nclist),length(λlist))
 
     for i_γ in 1:length(γlist), i_σ in 1:length(σlist), i_Nc in 1:length(Nclist), i_λ in 1:length(λlist)
         p.γh = γlist[i_γ]; p.γJ = γlist[i_γ]; p.Nc = Nclist[i_Nc]; p.λ = λlist[i_λ]
         
-        p.σh = σlist[i_σ]; p.σJ = 0.
+        p.σh = 0.; p.σJ = σlist[i_σ]
         PI_analytical[1,i_γ,i_σ,i_Nc,i_λ] = PI(p,1,ρLmn,ρSmn)
 
-        p.σh = 0.; p.σJ = σlist[i_σ]
+        p.σh = σlist[i_σ]; p.σJ = 0.
         PI_analytical[2,i_γ,i_σ,i_Nc,i_λ] = PI(p,1,ρLmn,ρSmn)
 
     end
@@ -295,16 +297,18 @@ function file2PI_infs(filename,ρLmn,ρSmn)
     gL_λσ,p,S,L,γlist,σlist,Nclist,λlist = jlddata["gL_λσ"],jlddata["p"],jlddata["S"],jlddata["L"],jlddata["γlist"],jlddata["σlist"],jlddata["Nclist"],jlddata["λlist"]
 
     PI_boot_γσ = PI_boot_gL_list.(gL_λσ)
+    #switched the plot order of J and h
+    PI_boot_γσ = PI_boot_γσ[2:-1:1,:,:,:,:]
 
     PI_analytical = zeros(2,length(γlist),length(σlist),length(Nclist),length(λlist))
 
     for i_γ in 1:length(γlist), i_σ in 1:length(σlist), i_Nc in 1:length(Nclist), i_λ in 1:length(λlist)
         p.γh = γlist[i_γ]; p.γJ = γlist[i_γ]; p.Nc = Nclist[i_Nc]; p.λ = λlist[i_λ]
         
-        p.σh = σlist[i_σ]; p.σJ = 0.
+        p.σh = 0.; p.σJ = σlist[i_σ]
         PI_analytical[1,i_γ,i_σ,i_Nc,i_λ] = PI_inf(p,1,ρLmn,ρSmn)
 
-        p.σh = 0.; p.σJ = σlist[i_σ]
+        p.σh = σlist[i_σ]; p.σJ = 0.
         PI_analytical[2,i_γ,i_σ,i_Nc,i_λ] = PI_inf(p,1,ρLmn,ρSmn)
 
     end
@@ -320,11 +324,11 @@ function file2PI_inf(filename,ρLmn,ρSmn)
     i_λ = 1; i_σ = 1;i_Nc = 1
     for i_γ in 1:length(γlist)
         p.γh = γlist[i_γ]; p.γJ = γlist[i_γ]; p.Nc = 0; p.λ = λlist[i_λ]
-        
-        p.σh = σlist[i_σ]; p.σJ = 0.
-        PI_analytical_inf[1,i_γ] = PI_inf(p,1,ρLmn,ρSmn)
 
         p.σh = 0.; p.σJ = σlist[i_σ]
+        PI_analytical_inf[1,i_γ] = PI_inf(p,1,ρLmn,ρSmn)
+
+        p.σh = σlist[i_σ]; p.σJ = 0.
         PI_analytical_inf[2,i_γ] = PI_inf(p,1,ρLmn,ρSmn)
 
     end
@@ -333,8 +337,7 @@ end
 
 function PIplot(PI_bootstrap, PI_analytical, para_list, para_name,d_palette,γlist; PI_analytical_inf = [])
     plots = Vector{Any}(undef,2)
-    palette = [cgrad(:Oranges,6,categorical=true),cgrad(:Blues,6,categorical=true)]
-    index_γτ = length(γlist):-1:1
+    palette = [cgrad(:Blues,6,categorical=true),cgrad(:Oranges,6,categorical=true)]
     index_γτ = 1:length(γlist)
     for i_Jh in 1:2
         plot()

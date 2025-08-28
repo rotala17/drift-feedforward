@@ -34,10 +34,10 @@ All figures can be reproduced by running the corresponding Jupyter notebooks in 
 | Figure | Notebook |
 |--------|----------|
 | Figure 1,S2 | `Fig1.ipynb` |
-| Figures 2-4,S3,S4 | `Fig2-4.ipynb` |
-| Figure 5,S6,S7 | `Fig5.ipynb` |
+| Figures 2-4,S3-S5 | `Fig2-4.ipynb` |
+| Figure 5,S7,S8 | `Fig5.ipynb` |
 | Figure S1 | `FigS1.ipynb` |
-| Figure S5 | `FigS5.ipynb` |
+| Figure S6 | `FigS6.ipynb` |
 
 Most data is generated directly within the figure notebooks when you run them. Some computationally intensive cells include time information as comments based on the specified hardware environment.
 
