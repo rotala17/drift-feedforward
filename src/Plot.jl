@@ -87,10 +87,10 @@ end
 
 function plot_tuning_similarity(C,θ,perm1,perm2,cmap,p,colorbar,put_ylabel,title,put_colorbar;xylim = (-5,5))
     θticks = ([0:π:3*π;], ["0", "\\pi", "2\\pi"])
-    ylabel = put_ylabel ? "Hidden neuron ID \n selected & sorted\n at \$t=0\$" : ""
+    ylabel = put_ylabel ? "Hidden neuron ID\nselected & sorted\nat \$t=0\$" : ""
     yticks = 0:100:length(perm1)
     p_perm1 = heatmap(θ,1:length(perm1), C[perm1,:],colormap = cmap,xticks = θticks,yticks = yticks,colorbar=colorbar,ylabel=ylabel,title=title,tick_direction=:none)
-    ylabel = put_ylabel ? "Hidden neuron ID \n selected & sorted \n at \$t=3\\tau\$" : ""
+    ylabel = put_ylabel ? "Hidden neuron ID\n selected & sorted \nat \$t=3\\tau\$" : ""
     yticks = 0:100:length(perm2)
     p_perm2 = heatmap(θ,1:length(perm2),C[perm2,:],colormap = cmap,xticks = θticks,yticks = yticks,colorbar=colorbar,xlabel="Phase",ylabel=ylabel,tick_direction=:none)
     
@@ -105,7 +105,8 @@ end
 function plot_PCA(C,θ,p,colorbar,put_colorbar,title,xylim)
     pca = fit(PCA,C;maxoutdim=2)
     Y = MultivariateStats.transform(pca,C)'
-    s_PCA = scatter(Y[:,1],Y[:,2],zcolor=θ,color=:twilight,xlim=xylim,ylim=xylim,legend=false,colorbar=colorbar,aspect_ratio = 1.,markerstrokewidth = 0,xlabel="Component 1",ylabel="Component 2",title=title)
+    s_PCA = scatter(Y[:,1],Y[:,2],zcolor=θ,color=:twilight,xlim=xylim,ylim=xylim,legend=false,colorbar=colorbar,aspect_ratio = 1.,markerstrokewidth = 0,xlabel="PC1",ylabel="PC2",title=title,
+    xticks = [-5,0,5],yticks = [-5,0,5])
     if put_colorbar
         θticks = ([0:π:3*π;], ["0", "\\pi", "2\\pi"])
         c_PCA = cbar(0:0.001:2π,θticks,"Phase",:twilight)
@@ -168,8 +169,8 @@ function plot_selectivity_space(h_A,h_B,colorbar=false;color = :black)
     #scatter(h_A[sparse,1],h_B[sparse,1],markersize=0.5)
     #quiver(h_A[sparse,1],h_B[sparse,1],quiver = (h_A[sparse,end]-h_A[sparse,1],h_B[sparse,end]-h_B[sparse,1]),line_z = repeat(selectivity[sparse],inner=4),c=color)
     quiver(h_A[sparse,1],h_B[sparse,1],quiver = (h_A[sparse,end]-h_A[sparse,1],h_B[sparse,end]-h_B[sparse,1]),c="#017100")
-    p3 = plot!(aspect_ratio = 1,ylim=lim,xlim=lim,clim=clim,title= "\$\\mathrm{change:}\\ t=0\\rightarrow 3\\tau\$",xlabel=labelA,ylabel=labelB,colorbar_title = "\$h^{A}-h^{B}\\ \\mathrm{at}\\ t=0\$")
-    plot(p1,p2,p3,layout=(1,3),size=(1200,400),legend=false,colorbar=colorbar)
+    p3 = plot!(aspect_ratio = 1,ylim=lim,xlim=lim,clim=clim,title= "Change from \$t=0\$ to \$3\\tau\$",xlabel=labelA,ylabel=labelB,colorbar_title = "\$h^{A}-h^{B}\\ \\mathrm{at}\\ t=0\$")
+    plot(p1,p2,p3,layout=(1,3),size=(1200,400),legend=false,colorbar=colorbar,rightmargin=5Plots.mm)
 end
 
 
@@ -372,7 +373,7 @@ function PIplot(PI_bootstrap, PI_analytical, para_list, para_name,d_palette,γli
         plot!(
             xscale = :log10,
             xlabel = "\$\\gamma\$",
-            ylabel = "\$\\mathrm{Error}\$",
+            ylabel = "Error",
             ylim = (0,0.55)
             )
         plots[i_Jh] = plot!()
@@ -393,7 +394,7 @@ function plot_normality_g(filename)
         xmin, xmax = extrema(gL_λσ[i_Jh,i_γ_sublist[i_γ],i_σ,1,1][1,:])
         xminmax = mean(abs.([xmin,xmax]))
         ticks = range(round(-xminmax, digits=1), round(+xminmax, digits=1), length=3)
-        histogram(
+        h = histogram(
             gL_λσ[i_Jh,i_γ_sublist[i_γ],i_σ,1,1][1,:],
             title="\$\\sigma=$(σlist[i_σ]),\\gamma = 10^{$(log10(γlist[i_γ_sublist[i_γ]]))}\$",
             titlefontsize = 10,
@@ -401,6 +402,8 @@ function plot_normality_g(filename)
             xticks = ticks,
             lw = 0,
             color=palette[i_Jh][4])#,xlim = (-0.6,0.6),ylim = (0,20))
+        ymax = floor(Plots.ylims()[2])
+        plot!(yticks = ([0,ymax],[0,ymax]))
         if i_γ == length(γ_sublist)
             plot!(xlabel = "\$g^{1}(t_{\\mathrm{end}})\$")
         end
